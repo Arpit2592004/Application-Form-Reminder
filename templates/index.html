@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Form Reminder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0066ff;
+      --bg: linear-gradient(120deg, #e0f2ff, #f9fcff);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text: #222;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .profile-dropdown {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .arrow {
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .rotate {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background: white;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+      border-radius: 10px;
+      min-width: 160px;
+      overflow: hidden;
+      z-index: 1001;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    h2, h3 {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    form {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #f7fafd;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #004ecb;
+    }
+
+    .switch-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #eef4ff;
+    }
+
+    tr.highlight {
+      background-color: #fff8d2;
+    }
+
+    td:last-child {
+      white-space: nowrap;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        background: white;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        padding: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      td {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  {% if session.get('username') %}
+  <div class="topbar">
+    <div class="profile-dropdown">
+      <div class="profile-btn" onclick="toggleDropdown()">
+        <span class="avatar">{{ session['username'][0] | upper }}</span>
+        <span class="name">{{ session['username'] }}</span>
+        <span class="arrow" id="arrow">▼</span>
+      </div>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a href="/profile">👤 Profile</a>
+        <a href="{{ url_for('change_password') }}">🔒 Change Password</a>
+        <a href="/logout">🚪 Logout</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="container">
+    <h2>📋 Application Form Reminder</h2>
+
+    <form method="POST" action="/add">
+      <input type="text" name="name" placeholder="Application Name" required>
+      <input type="date" name="reminder_date" required>
+      <textarea name="notes" placeholder="Notes (form link, last date, etc)"></textarea>
+
+      <div class="switch-container">
+        <label class="switch">
+          <input type="checkbox" name="email_enabled" value="1">
+          <span class="slider"></span>
+        </label>
+        <span>Send me an email reminder</span>
+      </div>
+
+      <button type="submit">➕ Add Reminder</button>
+    </form>
+
+    <h3>Your Reminders</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Notes</th>
+          <th>Email?</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reminders %}
+        <tr {% if r['reminder_date'] == today %} class="highlight" {% endif %}>
+          <td data-label="Name">{{ r['name'] }}</td>
+          <td data-label="Date">{{ r['reminder_date'] }}</td>
+          <td data-label="Notes">{{ r['notes'] }}</td>
+          <td data-label="Email?">{{ 'Yes' if r['email_enabled'] else 'No' }}</td>
+          <td data-label="Actions">
+            <a href="/edit/{{ r['id'] }}">✏️ Edit</a> |
+            <a href="/delete/{{ r['id'] }}" onclick="return confirm('Delete this reminder?')">🗑️ Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      const arrow = document.getElementById('arrow');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      arrow.classList.toggle('rotate');
+    }
+
+    document.addEventListener('click', function (e) {
+      const menu = document.getElementById('dropdownMenu');
+      const btn = document.querySelector('.profile-btn');
+      if (!btn.contains(e.target)) {
+        menu.style.display = 'none';
+        document.getElementById('arrow').classList.remove('rotate');
+      }
+    });
+  </script>
+</body>
+</html>
