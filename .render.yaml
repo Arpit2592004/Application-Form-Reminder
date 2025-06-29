@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: application-reminder
+    env: python
+    region: oregon
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    plan: free
+    envVars:
+      - key: EMAIL_SENDER
+        value: arpitcoolz69@example.com
+      - key: EMAIL_PASSWORD
+        value: xgpa pglc fgdv acks
