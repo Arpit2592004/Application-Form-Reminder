@@ -278,12 +278,8 @@ def change_password():
     return render_template('change_password.html', message=message)
 
 if __name__ == '__main__':
-    init_db()
-    if not os.path.exists(DB):
-        init_db()
-        print("✅ Database initialized.")
-    else:
-        print("📂 Database already exists.")
-    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-        threading.Thread(target=run_scheduler, daemon=True).start()
-    app.run(debug=True)
+    import os
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 10000))
+    app.run(debug=False, host="0.0.0.0", port=port)
